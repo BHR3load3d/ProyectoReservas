@@ -8,7 +8,7 @@ from AppMotorReservas.views import *
 from datetime import datetime
 import random
 
-def llenadoSites():
+def llenadoSites(): 
     for i in range(10):
         s = Site()
         s.Identificador = "Site " + str(i)
