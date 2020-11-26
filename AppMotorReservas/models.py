@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime, timedelta
 from django.utils.translation import ugettext as _
 
 class Site(models.Model):
@@ -41,8 +42,10 @@ class Espacio(models.Model):
         return self.Descripcion 
     
     def Estado(self):
-
-        return 'no me acuerdo que retornaba'
+        #fecha = datetime.now()
+        fecha = datetime(2020,11,1,0,0,0,0) #para las pruebas. queda el datetime.now()
+        r = Reserva.objects.filter(EspacioId = self.id).filter(FechaIni__date = datetime(fecha.year,fecha.month,fecha.day).date())
+        return r
 
 class Miembro(models.Model): #dummy a efectos del desarrollo, entiendo que ya tenes esta tabla
     Nombre = models.CharField(max_length=255)

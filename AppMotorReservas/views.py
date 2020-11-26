@@ -7,11 +7,11 @@ from datetime import datetime, timedelta
 from collections import deque
 
 # La view
-def disponibilidad(request, tipo, entidad_id, start_date, end_date):
-    if tipo == 1:
-         d = disponibilidadEspacios(entidad_id, start_date, end_date) # entidad_id: site_id
+def disponibilidad(request, site_id, espacio_id, start_date, end_date):
+    if espacio_id == "-1": #Buscamos por site_id
+         d = disponibilidadEspacios(site_id, start_date, end_date) # entidad_id: site_id
     else:
-        d = disponibilidadEspacio(entidad_id, start_date, end_date) # entidad_id: espacio_id
+        d = disponibilidadEspacio(espacio_id, start_date, end_date) # entidad_id: espacio_id
 
     return HttpResponse(d)
 
@@ -21,7 +21,10 @@ def disponibilidadEspacios(site_id, start_date, end_date):
 
     espaciostipo = EspacioTipo.objects.filter(Activo=True)
 
-    espacios_id = Reserva.objects.exclude(FechaIni__gt = end_date).exclude(FechaFin__lt = start_date).values_list('EspacioId', flat=True).distinct()
+    start_date_dt = datetime.strptime(start_date, '%Y-%m-%d %H:%M:%S.%f')
+    end_date_dt = datetime.strptime(end_date, '%Y-%m-%d %H:%M:%S.%f')
+
+    espacios_id = Reserva.objects.exclude(FechaIni__gt = end_date_dt).exclude(FechaFin__lt = start_date_dt).values_list('EspacioId', flat=True).distinct()
     espacios = Espacio.objects.filter(SiteId = site).filter(TipoId__in = espaciostipo).exclude(id__in = espacios_id)
 
 

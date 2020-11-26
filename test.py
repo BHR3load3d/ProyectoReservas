@@ -90,10 +90,7 @@ llenadobase()
 
 
 # Prueba disponibilidad de espacios para una fecha y hora concreta
-d1 = datetime(2020,11,3,14,0,0,0)
-d2 = datetime(2020,11,5,15,0,0,0)
-
-espacios = disponibilidadEspacios(1, d1, d2)
+espacios = disponibilidadEspacios(1, '2020-11-03 14:00:00.0', '2020-11-05 15:00:00.0')
 
 print('Cantidad de espacios que coinciden con la búsqueda: ' + str(espacios.count()))
 
@@ -105,4 +102,13 @@ fechas = disponibilidadEspacio(1, '2020-11-01 00:00:00.0', '2020-11-05 15:00:00.
 
 for f in fechas:
     print(f)
+
+
+
+print('.................................................................')
+print('Reservas asociadas a los espacios')
+for est in Espacio.objects.all():
+    for res in est.Estado():
+        print(est.Descripcion + ' - ' + str(res.FechaIni))
+print('.................................................................')
 
